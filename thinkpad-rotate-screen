@@ -1,0 +1,41 @@
+#!/bin/sh
+
+TRACKPOINT='TPPS/2 IBM TrackPoint'
+TOUCHPAD='SynPS/2 Synaptics TouchPad'
+
+if   [ "$1" = "normal" ]
+then
+    xrandr --orientation normal
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Axes Swap" 0
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Axis Inversion" 0 0
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Wheel Emulation Axes" 6 7 4 5
+    # xinput enable "$TOUCHPAD"
+    synclient Orientation=0
+elif [ "$1" = "left" ]
+then
+    xrandr --orientation left
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Axes Swap" 1
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Axis Inversion" 1 0
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Wheel Emulation Axes" 4 5 7 6
+    # xinput disable "$TOUCHPAD"
+    synclient Orientation=1
+elif [ "$1" = "right" ]
+then
+    xrandr --orientation right
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Axes Swap" 1
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Axis Inversion" 0 1
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Wheel Emulation Axes" 5 4 6 7
+    # xinput disable "$TOUCHPAD"
+    synclient Orientation=3
+elif [ "$1" = "inverted" ]
+then
+    xrandr --orientation inverted
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Axes Swap" 0
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Axis Inversion" 1 1
+    xinput set-prop --type=int --format=8 "$TRACKPOINT" "Evdev Wheel Emulation Axes" 7 6 5 4
+    # xinput disable "$TOUCHPAD"
+    synclient Orientation=2
+else
+    echo "$0 [normal,left,right,inverted]"
+fi
+
